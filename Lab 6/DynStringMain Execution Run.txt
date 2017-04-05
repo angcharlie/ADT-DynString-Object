@@ -1,0 +1,111 @@
+Find lines containing DynString:
+   1: // DynString.cpp
+   4: //Implementation file for DynString.h
+  10: #include "DynString.h"
+  14: DynString::DynString(const char s[], const int len)
+  14: DynString::DynString(const char s[], const int len)
+  31: DynString::DynString(const DynString &s)
+  31: DynString::DynString(const DynString &s)
+  31: DynString::DynString(const DynString &s)
+  45: DynString& DynString::operator=(const DynString &rhs)
+  45: DynString& DynString::operator=(const DynString &rhs)
+  45: DynString& DynString::operator=(const DynString &rhs)
+  69: DynString::~DynString()
+  69: DynString::~DynString()
+  74: const int DynString::length() const
+  79: const char* DynString::toString() const
+  84: bool DynString::readLine(std::istream& in)
+  88:           *this = DynString();    // Default string value.
+ 111: bool DynString::readFile(const char filename[])
+ 116:           *this = DynString();    // Default string value.
+ 122:   //       Replace existing DynString value with the first line
+ 125:   DynString temp; //temporary DynString object
+ 125:   DynString temp; //temporary DynString object
+ 127:   DynString newLine(n);
+ 141: void DynString::concat(const DynString &s)
+ 141: void DynString::concat(const DynString &s)
+ 144:   DynString temp = pBuff; //copies pBUff into a temp dynstring variable
+ 154: const int DynString::compare(const DynString &s) const
+ 154: const int DynString::compare(const DynString &s) const
+ 159: const char DynString::getChar(const int position) const
+ 171: const int DynString::findChar(const char ch, const int startoffset) const
+ 188: DynString DynString::substr(const int start, const int len) const
+ 188: DynString DynString::substr(const int start, const int len) const
+ 191:           return(DynString());
+ 193:   return(DynString(&pBuff[start], len) ); // Utilize constructor to create
+ substr
+ 198: DynString DynString::findLine(const int linenum) const
+ 198: DynString DynString::findLine(const int linenum) const
+ 203:           return(DynString());    //returns an empty string
+ 229:   return(DynString());
+ 233: int DynString::findLineNumber(const int position) const
+ 250: // Overload << operator for DynStrings
+ 252: std::ostream &operator<<(std::ostream& out, const DynString &s)
+
+Find lines containing pBuff:
+  21:   pBuff = new char[curLength + 1];
+  22:   assert(pBuff);
+  24:   for(int i=0; i<curLength; ++i)          // or, strncpy_s(pBuff, curLengt
+h+1, s, curLength);
+  25:           pBuff[i] = s[i];
+  27:   pBuff[curLength] = 0;
+  34:   pBuff = new char[curLength + 1];        //allocate new array with room f
+or '\0' sentinel
+  39:           pBuff[i] = s.pBuff[i];
+  39:           pBuff[i] = s.pBuff[i];
+  41:   pBuff[curLength] = 0;           //append end of string sentinel
+  49:           // Delete old string-value and create new pBuff that
+  51:           delete[] pBuff;         //delete old cstring array
+  55:           pBuff = new char[curLength + 1];                //allocate new a
+rray with room for '\0' sentinel
+  60:                   pBuff[i] = rhs.pBuff[i];
+  60:                   pBuff[i] = rhs.pBuff[i];
+  62:           pBuff[curLength] = 0;           //append end of string sentinel
+  71:   delete[] pBuff;
+  81:    return pBuff;
+  96:   delete[] pBuff;         //delete pBuff cstring variable
+  96:   delete[] pBuff;         //delete pBuff cstring variable
+  98:   pBuff = new char[curLength + 1];        //create new pBuff variable of u
+pdated size leaving room for newline and null
+  98:   pBuff = new char[curLength + 1];        //create new pBuff variable of u
+pdated size leaving room for newline and null
+ 101:           pBuff[i] = s[i];
+ 103:   pBuff[curLength] = 0;   //append null byte sentinel
+ 121:   // Read the file-contents into a new pBuff string
+ 131:           temp.concat(pBuff);     //concatenate line that was just read in
+ to temp's
+ 135:   concat(temp);   //copy everything over into pBuff
+ 143:   int pBuffLength = curLength;    //length of pBuff
+ 143:   int pBuffLength = curLength;    //length of pBuff
+ 144:   DynString temp = pBuff; //copies pBUff into a temp dynstring variable
+ 145:   curLength = pBuffLength + s.curLength;  //string value's current length
++ s's current length
+ 146:   delete[] pBuff;
+ 147:   pBuff = new char[curLength + 1];        //pBuff dynamically updated to f
+it size of original plus concatenated plus room for 0 null
+ 147:   pBuff = new char[curLength + 1];        //pBuff dynamically updated to f
+it size of original plus concatenated plus room for 0 null
+ 148:   strncpy_s(pBuff, curLength + 1, temp.pBuff, temp.curLength);    //copies
+ temp into pBuff excluding null byte
+ 148:   strncpy_s(pBuff, curLength + 1, temp.pBuff, temp.curLength);    //copies
+ temp into pBuff excluding null byte
+ 148:   strncpy_s(pBuff, curLength + 1, temp.pBuff, temp.curLength);    //copies
+ temp into pBuff excluding null byte
+ 149:   strcat_s(pBuff, curLength + 1, s.pBuff);        //concatenates s onto pB
+uff
+ 149:   strcat_s(pBuff, curLength + 1, s.pBuff);        //concatenates s onto pB
+uff
+ 149:   strcat_s(pBuff, curLength + 1, s.pBuff);        //concatenates s onto pB
+uff
+ 150:   pBuff[curLength] = 0;   //append null byte
+ 156:   return(strcmp(pBuff, s.pBuff));  // use the cstring function
+ 156:   return(strcmp(pBuff, s.pBuff));  // use the cstring function
+ 167:           return(pBuff[position]);        //return char at that position
+ 180:           if (pBuff[i] == ch)
+ 193:   return(DynString(&pBuff[start], len) ); // Utilize constructor to create
+ substr
+ 210:           if (pBuff[i] == '\n')
+ 221:   while (pBuff[j] != '\n')
+ 238:           if (pBuff[i] == '\n')
+ 256:   out << s.toString();    // could use s.pBuff if friend operator<< overlo
+ad in class

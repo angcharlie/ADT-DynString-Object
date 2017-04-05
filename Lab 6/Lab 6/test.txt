@@ -1,0 +1,209 @@
+// DynString.cpp
+// Charlie Ang
+// 03/01/16
+// TODO Stubbed methods:  Coding for several methods must be finished.
+
+#include <cstring>
+#include <assert.h>
+#include <iostream>
+#include <fstream>
+
+#include "DynString.h"
+
+// Default and Convert Constructor
+// Default parameters are provided for both s and len
+DynString::DynString(const char s[], const int len)
+{
+	curLength = len;							// new string length
+	int maxLen = strlen(s);						// limit
+	if(curLength < 0 || curLength > maxLen)
+		curLength = maxLen;
+
+	pBuff = new char[curLength + 1];
+	assert(pBuff);
+
+	for(int i=0; i<curLength; ++i)		// or, strncpy_s(pBuff, curLength+1, s, curLength);
+		pBuff[i] = s[i];
+
+	pBuff[curLength] = 0;
+}
+
+// Copy Constructor
+DynString::DynString(const DynString &s)
+{
+	// TODO
+	curLength = s.curLength;
+	pBuff = new char[curLength + 1];	//allocate new array with room for '\0' sentinel
+
+	//Copy array values from s
+	for (int i = 0; i < curLength; i++)
+	{
+		pBuff[i] = s.pBuff[i];
+	}
+	pBuff[curLength] = 0;		//append end of string sentinel
+}
+
+// Assignment operator=
+DynString& DynString::operator=(const DynString &rhs)
+{
+	if(this != &rhs)
+	{
+		// Delete old string-value and create new pBuff that
+		// is copy of rhs string-value
+		// TODO
+		delete[] pBuff;		//delete old cstring array
+
+		//Make deep copy of rhs
+		curLength = rhs.curLength;
+		pBuff = new char[curLength + 1];		//allocate new array with room for '\0' sentinel
+
+		//Copy array values from rhs
+		for (int i = 0; i < curLength; i++)
+		{
+			pBuff[i] = rhs.pBuff[i];
+		}
+		pBuff[curLength] = 0;		//append end of string sentinel
+	}
+
+	return *this;
+}
+
+// Destructor
+DynString::~DynString()
+{
+	// TODO
+	delete[] pBuff;
+}
+
+const int DynString::length() const
+{
+	return(curLength);
+}
+
+const char* DynString::toString() const
+{
+   return pBuff;
+}
+
+bool DynString::readLine(std::istream& in)
+{
+	if(in.eof())
+	{
+		*this = DynString();	// Default string value.
+		return(false);
+	}
+
+	char s[257];
+	in.getline(s, 257);
+
+	// Replace existing string-value with copy of line s
+	// TODO
+	//
+	
+	delete[] pBuff;		//delete pBuff cstring variable 
+	curLength = strlen(s);	//length of s
+	pBuff = new char[curLength + 1];	//create new pBuff variable of updated size leaving room for newline and null
+	//strncpy_s(pBuff, lengthS, s, lengthS);	//copy everything from s into pBuff 
+	for (int i = 0; i < curLength; i++)
+	{
+		pBuff[i] = s[i];
+	}
+	//pBuff[curLength] = '\n';	//append newline character to end of string
+	pBuff[curLength] = 0;	//append null byte sentinel
+
+	std::cout << pBuff << std::endl;	//outputs whatever is in pbuff for testing
+
+	return(true);
+}
+
+// Open file
+// Read entire input file into string
+// Close file
+bool DynString::readFile(const char filename[])
+{
+	std::ifstream in(filename);
+	if(! in.is_open() )
+	{
+		*this = DynString();	// Default string value.
+		return(false);
+	}
+
+	// Delete old string-value and
+	// Read the file-contents into a new pBuff string
+	//	 Replace existing DynString value with the first line
+	//   Concatenate any additional lines
+	// TODO
+
+	//create temp local variable of DynString...temp.readline(inputFileName)...concatenate to current one....concatenate '\n'...loop and replace temp and just keep concatenate (readLine and couple of concatenate)
+	delete[] pBuff;	//delete pBuff 
+	DynString temp;	//temporary DynString object 
+	temp.readLine(in);	//temp reads in first line
+
+	while (!in.eof())	//while not end of file, keep looping and concatenating 
+	{
+
+	}
+
+
+	in.close();
+	return(true);
+}
+
+void DynString::concat(const DynString &s)
+{
+	// TODO
+	//int length = curLength + s.curLength + 1;	//string value's current length + s's current length + 1 for null
+
+
+	return;
+}
+
+const int DynString::compare(const DynString &s) const
+{
+	return(strcmp(pBuff, s.pBuff));  // use the cstring function
+}
+
+const char DynString::getChar(const int position) const
+{
+	// TODO
+	return(0);
+}
+
+const int DynString::findChar(const char ch, const int startoffset) const
+{
+	// TODO
+	return(-1);
+}
+
+DynString DynString::substr(const int start, const int len) const
+{
+	if(start < 0 || start >= curLength)  	// Validate start range
+		return(DynString());
+
+	return(DynString(&pBuff[start], len) );	// Utilize constructor to create substr
+}
+
+// Return substring of original corresponding to linenum (1 .. n)
+// Do not include '\n' at end of line
+DynString DynString::findLine(const int linenum) const
+{
+	// TODO
+	return(DynString());
+}
+
+// Return line number corresponding to position in string
+int DynString::findLineNumber(const int position) const
+{
+	// TODO
+	return(-1);
+}
+
+// Overload << operator for DynStrings
+// Note: friend function, not a class method, so must use toString() method
+std::ostream &operator<<(std::ostream& out, const DynString &s)
+{
+	// Use insertion << operator with stream out to output the string value of s.
+
+	out << s.toString();    // could use s.pBuff if friend operator<< overload in class
+	return(out);		    // enables cascaded calls
+}
